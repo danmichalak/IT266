@@ -95,55 +95,6 @@ void PlayerNoise(edict_t *who, vec3_t where, int type)
 	gi.linkentity (noise);
 }
 
-
-qboolean Pickup_Weapon (edict_t *ent, edict_t *other)
-{
-	int			index;
-	gitem_t		*ammo;
-
-	index = ITEM_INDEX(ent->item);
-
-	if ( ( ((int)(dmflags->value) & DF_WEAPONS_STAY) || coop->value) 
-		&& other->client->pers.inventory[index])
-	{
-		if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM) ) )
-			return false;	// leave the weapon for others to pickup
-	}
-
-	other->client->pers.inventory[index]++;
-
-	if (!(ent->spawnflags & DROPPED_ITEM) )
-	{
-		// give them some ammo with it
-		ammo = FindItem (ent->item->ammo);
-		if ( (int)dmflags->value & DF_INFINITE_AMMO )
-			Add_Ammo (other, ammo, 1000);
-		else
-			Add_Ammo (other, ammo, ammo->quantity);
-
-		if (! (ent->spawnflags & DROPPED_PLAYER_ITEM) )
-		{
-			if (deathmatch->value)
-			{
-				if ((int)(dmflags->value) & DF_WEAPONS_STAY)
-					ent->flags |= FL_RESPAWN;
-				else
-					SetRespawn (ent, 30);
-			}
-			if (coop->value)
-				ent->flags |= FL_RESPAWN;
-		}
-	}
-
-	if (other->client->pers.weapon != ent->item && 
-		(other->client->pers.inventory[index] == 1) &&
-		( !deathmatch->value || other->client->pers.weapon == FindItem("blaster") ) )
-		other->client->newweapon = ent->item;
-
-	return true;
-}
-
-
 /*
 ===============
 ChangeWeapon
@@ -319,33 +270,6 @@ void Use_Weapon (edict_t *ent, gitem_t *item)
 	// change to this weapon when down
 	ent->client->newweapon = item;
 }
-
-
-
-/*
-================
-Drop_Weapon
-================
-*/
-void Drop_Weapon (edict_t *ent, gitem_t *item)
-{
-	int		index;
-
-	if ((int)(dmflags->value) & DF_WEAPONS_STAY)
-		return;
-
-	index = ITEM_INDEX(item);
-	// see if we're already using it
-	if ( ((item == ent->client->pers.weapon) || (item == ent->client->newweapon))&& (ent->client->pers.inventory[index] == 1) )
-	{
-		gi.cprintf (ent, PRINT_HIGH, "Can't drop current weapon\n");
-		return;
-	}
-
-	Drop_Item (ent, item);
-	ent->client->pers.inventory[index]--;
-}
-
 
 /*
 ================

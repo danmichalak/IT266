@@ -172,149 +172,6 @@ void Drop_General (edict_t *ent, gitem_t *item)
 	ValidateSelectedItem (ent);
 }
 
-
-//======================================================================
-
-qboolean Pickup_Adrenaline (edict_t *ent, edict_t *other)
-{
-	if (!deathmatch->value)
-		other->max_health += 1;
-
-	if (other->health < other->max_health)
-		other->health = other->max_health;
-
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
-		SetRespawn (ent, ent->item->quantity);
-
-	return true;
-}
-
-qboolean Pickup_AncientHead (edict_t *ent, edict_t *other)
-{
-	other->max_health += 2;
-
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
-		SetRespawn (ent, ent->item->quantity);
-
-	return true;
-}
-
-qboolean Pickup_Bandolier (edict_t *ent, edict_t *other)
-{
-	gitem_t	*item;
-	int		index;
-
-	if (other->client->pers.max_bullets < 250)
-		other->client->pers.max_bullets = 250;
-	if (other->client->pers.max_shells < 150)
-		other->client->pers.max_shells = 150;
-	if (other->client->pers.max_cells < 250)
-		other->client->pers.max_cells = 250;
-	if (other->client->pers.max_slugs < 75)
-		other->client->pers.max_slugs = 75;
-
-	item = FindItem("Bullets");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_bullets)
-			other->client->pers.inventory[index] = other->client->pers.max_bullets;
-	}
-
-	item = FindItem("Shells");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_shells)
-			other->client->pers.inventory[index] = other->client->pers.max_shells;
-	}
-
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
-		SetRespawn (ent, ent->item->quantity);
-
-	return true;
-}
-
-qboolean Pickup_Pack (edict_t *ent, edict_t *other)
-{
-	gitem_t	*item;
-	int		index;
-
-	if (other->client->pers.max_bullets < 300)
-		other->client->pers.max_bullets = 300;
-	if (other->client->pers.max_shells < 200)
-		other->client->pers.max_shells = 200;
-	if (other->client->pers.max_rockets < 100)
-		other->client->pers.max_rockets = 100;
-	if (other->client->pers.max_grenades < 100)
-		other->client->pers.max_grenades = 100;
-	if (other->client->pers.max_cells < 300)
-		other->client->pers.max_cells = 300;
-	if (other->client->pers.max_slugs < 100)
-		other->client->pers.max_slugs = 100;
-
-	item = FindItem("Bullets");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_bullets)
-			other->client->pers.inventory[index] = other->client->pers.max_bullets;
-	}
-
-	item = FindItem("Shells");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_shells)
-			other->client->pers.inventory[index] = other->client->pers.max_shells;
-	}
-
-	item = FindItem("Cells");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_cells)
-			other->client->pers.inventory[index] = other->client->pers.max_cells;
-	}
-
-	item = FindItem("Grenades");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_grenades)
-			other->client->pers.inventory[index] = other->client->pers.max_grenades;
-	}
-
-	item = FindItem("Rockets");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_rockets)
-			other->client->pers.inventory[index] = other->client->pers.max_rockets;
-	}
-
-	item = FindItem("Slugs");
-	if (item)
-	{
-		index = ITEM_INDEX(item);
-		other->client->pers.inventory[index] += item->quantity;
-		if (other->client->pers.inventory[index] > other->client->pers.max_slugs)
-			other->client->pers.inventory[index] = other->client->pers.max_slugs;
-	}
-
-	if (!(ent->spawnflags & DROPPED_ITEM) && (deathmatch->value))
-		SetRespawn (ent, ent->item->quantity);
-
-	return true;
-}
-
 //======================================================================
 
 void Use_Quad (edict_t *ent, gitem_t *item)
@@ -368,32 +225,6 @@ void Use_Envirosuit (edict_t *ent, gitem_t *item)
 		ent->client->enviro_framenum += 300;
 	else
 		ent->client->enviro_framenum = level.framenum + 300;
-
-//	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage.wav"), 1, ATTN_NORM, 0);
-}
-
-//======================================================================
-
-void	Use_Invulnerability (edict_t *ent, gitem_t *item)
-{
-	ent->client->pers.inventory[ITEM_INDEX(item)]--;
-	ValidateSelectedItem (ent);
-
-	if (ent->client->invincible_framenum > level.framenum)
-		ent->client->invincible_framenum += 300;
-	else
-		ent->client->invincible_framenum = level.framenum + 300;
-
-	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/protect.wav"), 1, ATTN_NORM, 0);
-}
-
-//======================================================================
-
-void	Use_Silencer (edict_t *ent, gitem_t *item)
-{
-	ent->client->pers.inventory[ITEM_INDEX(item)]--;
-	ValidateSelectedItem (ent);
-	ent->client->silencer_shots += 30;
 
 //	gi.sound(ent, CHAN_ITEM, gi.soundindex("items/damage.wav"), 1, ATTN_NORM, 0);
 }
@@ -460,62 +291,6 @@ qboolean Add_Ammo (edict_t *ent, gitem_t *item, int count)
 
 	return true;
 }
-
-qboolean Pickup_Ammo (edict_t *ent, edict_t *other)
-{
-	int			oldcount;
-	int			count;
-	qboolean	weapon;
-
-	weapon = (ent->item->flags & IT_WEAPON);
-	if ( (weapon) && ( (int)dmflags->value & DF_INFINITE_AMMO ) )
-		count = 1000;
-	else if (ent->count)
-		count = ent->count;
-	else
-		count = ent->item->quantity;
-
-	oldcount = other->client->pers.inventory[ITEM_INDEX(ent->item)];
-
-	if (!Add_Ammo (other, ent->item, count))
-		return false;
-
-	if (weapon && !oldcount)
-	{
-		if (other->client->pers.weapon != ent->item && ( !deathmatch->value || other->client->pers.weapon == FindItem("blaster") ) )
-			other->client->newweapon = ent->item;
-	}
-
-	if (!(ent->spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) && (deathmatch->value))
-		SetRespawn (ent, 30);
-	return true;
-}
-
-void Drop_Ammo (edict_t *ent, gitem_t *item)
-{
-	edict_t	*dropped;
-	int		index;
-
-	index = ITEM_INDEX(item);
-	dropped = Drop_Item (ent, item);
-	if (ent->client->pers.inventory[index] >= item->quantity)
-		dropped->count = item->quantity;
-	else
-		dropped->count = ent->client->pers.inventory[index];
-
-	if (ent->client->pers.weapon && 
-		ent->client->pers.weapon->tag == AMMO_GRENADES &&
-		item->tag == AMMO_GRENADES &&
-		ent->client->pers.inventory[index] - dropped->count <= 0) {
-		gi.cprintf (ent, PRINT_HIGH, "Can't drop current weapon\n");
-		G_FreeEdict(dropped);
-		return;
-	}
-
-	ent->client->pers.inventory[index] -= dropped->count;
-	ValidateSelectedItem (ent);
-}
-
 
 //======================================================================
 
@@ -1073,7 +848,7 @@ void SpawnItem (edict_t *ent, gitem_t *item)
 		}
 		if ( (int)dmflags->value & DF_NO_HEALTH )
 		{
-			if (item->pickup == Pickup_Health || item->pickup == Pickup_Adrenaline || item->pickup == Pickup_AncientHead)
+			if (item->pickup == Pickup_Health)
 			{
 				G_FreeEdict (ent);
 				return;
@@ -1294,9 +1069,9 @@ always owned, never in the world
 */
 	{
 		"weapon_shotgun", 
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_Shotgun,
 		"misc/w_pkup.wav",
 		"models/weapons/g_shotg/tris.md2", EF_ROTATE,
@@ -1317,9 +1092,9 @@ always owned, never in the world
 */
 	{
 		"weapon_supershotgun", 
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_SuperShotgun,
 		"misc/w_pkup.wav",
 		"models/weapons/g_shotg2/tris.md2", EF_ROTATE,
@@ -1340,9 +1115,9 @@ always owned, never in the world
 */
 	{
 		"weapon_machinegun", 
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_Machinegun,
 		"misc/w_pkup.wav",
 		"models/weapons/g_machn/tris.md2", EF_ROTATE,
@@ -1363,9 +1138,9 @@ always owned, never in the world
 */
 	{
 		"weapon_chaingun", 
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_Chaingun,
 		"misc/w_pkup.wav",
 		"models/weapons/g_chain/tris.md2", EF_ROTATE,
@@ -1386,9 +1161,9 @@ always owned, never in the world
 */
 	{
 		"ammo_grenades",
-		Pickup_Ammo,
-		Use_Weapon,
-		Drop_Ammo,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_Grenade,
 		"misc/am_pkup.wav",
 		"models/items/ammo/grenades/medium/tris.md2", 0,
@@ -1409,9 +1184,9 @@ always owned, never in the world
 */
 	{
 		"weapon_grenadelauncher",
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_GrenadeLauncher,
 		"misc/w_pkup.wav",
 		"models/weapons/g_launch/tris.md2", EF_ROTATE,
@@ -1432,9 +1207,9 @@ always owned, never in the world
 */
 	{
 		"weapon_rocketlauncher",
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_RocketLauncher,
 		"misc/w_pkup.wav",
 		"models/weapons/g_rocket/tris.md2", EF_ROTATE,
@@ -1455,9 +1230,9 @@ always owned, never in the world
 */
 	{
 		"weapon_hyperblaster", 
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_HyperBlaster,
 		"misc/w_pkup.wav",
 		"models/weapons/g_hyperb/tris.md2", EF_ROTATE,
@@ -1478,9 +1253,9 @@ always owned, never in the world
 */
 	{
 		"weapon_railgun", 
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_Railgun,
 		"misc/w_pkup.wav",
 		"models/weapons/g_rail/tris.md2", EF_ROTATE,
@@ -1501,9 +1276,9 @@ always owned, never in the world
 */
 	{
 		"weapon_bfg",
-		Pickup_Weapon,
-		Use_Weapon,
-		Drop_Weapon,
+		NULL,
+		NULL,
+		NULL,
 		Weapon_BFG,
 		"misc/w_pkup.wav",
 		"models/weapons/g_bfg/tris.md2", EF_ROTATE,
@@ -1528,9 +1303,9 @@ always owned, never in the world
 */
 	{
 		"ammo_shells",
-		Pickup_Ammo,
 		NULL,
-		Drop_Ammo,
+		NULL,
+		NULL,
 		NULL,
 		"misc/am_pkup.wav",
 		"models/items/ammo/shells/medium/tris.md2", 0,
@@ -1551,9 +1326,9 @@ always owned, never in the world
 */
 	{
 		"ammo_bullets",
-		Pickup_Ammo,
 		NULL,
-		Drop_Ammo,
+		NULL,
+		NULL,
 		NULL,
 		"misc/am_pkup.wav",
 		"models/items/ammo/bullets/medium/tris.md2", 0,
@@ -1574,9 +1349,9 @@ always owned, never in the world
 */
 	{
 		"ammo_cells",
-		Pickup_Ammo,
 		NULL,
-		Drop_Ammo,
+		NULL,
+		NULL,
 		NULL,
 		"misc/am_pkup.wav",
 		"models/items/ammo/cells/medium/tris.md2", 0,
@@ -1597,9 +1372,9 @@ always owned, never in the world
 */
 	{
 		"ammo_rockets",
-		Pickup_Ammo,
 		NULL,
-		Drop_Ammo,
+		NULL,
+		NULL,
 		NULL,
 		"misc/am_pkup.wav",
 		"models/items/ammo/rockets/medium/tris.md2", 0,
@@ -1620,9 +1395,9 @@ always owned, never in the world
 */
 	{
 		"ammo_slugs",
-		Pickup_Ammo,
 		NULL,
-		Drop_Ammo,
+		NULL,
+		NULL,
 		NULL,
 		"misc/am_pkup.wav",
 		"models/items/ammo/slugs/medium/tris.md2", 0,
@@ -1647,9 +1422,9 @@ always owned, never in the world
 */
 	{
 		"item_quad", 
-		Pickup_Powerup,
-		Use_Quad,
-		Drop_General,
+		NULL,
+		NULL,
+		NULL,
 		NULL,
 		"items/pkup.wav",
 		"models/items/quaddama/tris.md2", EF_ROTATE,
@@ -1670,9 +1445,9 @@ always owned, never in the world
 */
 	{
 		"item_invulnerability",
-		Pickup_Powerup,
-		Use_Invulnerability,
-		Drop_General,
+		NULL,
+		NULL,
+		NULL,
 		NULL,
 		"items/pkup.wav",
 		"models/items/invulner/tris.md2", EF_ROTATE,
@@ -1693,9 +1468,9 @@ always owned, never in the world
 */
 	{
 		"item_silencer",
-		Pickup_Powerup,
-		Use_Silencer,
-		Drop_General,
+		NULL,
+		NULL,
+		NULL,
 		NULL,
 		"items/pkup.wav",
 		"models/items/silencer/tris.md2", EF_ROTATE,
@@ -1763,7 +1538,7 @@ Special item that gives +2 to maximum health
 */
 	{
 		"item_ancient_head",
-		Pickup_AncientHead,
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1787,7 +1562,7 @@ gives +1 to maximum health
 */
 	{
 		"item_adrenaline",
-		Pickup_Adrenaline,
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1810,7 +1585,7 @@ gives +1 to maximum health
 */
 	{
 		"item_bandolier",
-		Pickup_Bandolier,
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1833,7 +1608,7 @@ gives +1 to maximum health
 */
 	{
 		"item_pack",
-		Pickup_Pack,
+		NULL,
 		NULL,
 		NULL,
 		NULL,
