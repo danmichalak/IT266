@@ -464,15 +464,16 @@ void infantry_cock_gun (edict_t *self)
 	n = (rand() & 15) + 3 + 7;
 	self->monsterinfo.pausetime = level.time + n * FRAMETIME;
 }
-
+/*
 void infantry_fire (edict_t *self)
 {
 	InfantryMachineGun (self);
-
+	
 	if (level.time >= self->monsterinfo.pausetime)
 		self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
 	else
 		self->monsterinfo.aiflags |= AI_HOLD_FRAME;
+
 }
 
 mframe_t infantry_frames_attack1 [] =
@@ -494,7 +495,7 @@ mframe_t infantry_frames_attack1 [] =
 	ai_charge, -3, NULL
 };
 mmove_t infantry_move_attack1 = {FRAME_attak101, FRAME_attak115, infantry_frames_attack1, infantry_run};
-
+*/
 
 void infantry_swing (edict_t *self)
 {
@@ -527,8 +528,8 @@ void infantry_attack(edict_t *self)
 {
 	if (range (self, self->enemy) == RANGE_MELEE)
 		self->monsterinfo.currentmove = &infantry_move_attack2;
-	else
-		self->monsterinfo.currentmove = &infantry_move_attack1;
+	//else
+	//	self->monsterinfo.currentmove = &infantry_move_attack1;
 }
 
 
