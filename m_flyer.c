@@ -344,27 +344,46 @@ mframe_t flyer_frames_bankleft [] =
 };
 mmove_t flyer_move_bankleft = {FRAME_bankl01, FRAME_bankl07, flyer_frames_bankleft, NULL};		
 
+static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
 
 void flyer_fire (edict_t *self, int flash_number)
 {
 	vec3_t	start;
-	vec3_t	forward, right;
-	vec3_t	end;
+	vec3_t	forward, right, up;
+	vec3_t	aim;
 	vec3_t	dir;
-	int		effect;
+	vec3_t	end;
+	float	r, u;
+	int		flash_index;
 
-	if ((self->s.frame == FRAME_attak204) || (self->s.frame == FRAME_attak207) || (self->s.frame == FRAME_attak210))
-		effect = EF_HYPERBLASTER;
-	else
-		effect = 0;
+	flash_index = shotgun_flash[flash_number];
+
 	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
-	
-	VectorCopy (self->enemy->s.origin, end);
-	end[2] += self->enemy->viewheight;
-	VectorSubtract (end, start, dir);
+	G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
 
-	monster_fire_blaster (self, start, dir, 1, 1000, flash_number, effect);
+	if (flash_number == 5 || flash_number == 6)
+	{
+		VectorCopy (forward, aim);
+	}
+	else
+	{
+		VectorCopy (self->enemy->s.origin, end);
+		end[2] += self->enemy->viewheight;
+		VectorSubtract (end, start, aim);
+		vectoangles (aim, dir);
+		AngleVectors (dir, forward, right, up);
+
+		r = crandom()*1000;
+		u = crandom()*500;
+		VectorMA (start, 8192, forward, end);
+		VectorMA (end, r, right, end);
+		VectorMA (end, u, up, end);
+
+		VectorSubtract (end, start, aim);
+		VectorNormalize (aim);
+	}
+	
+	monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 }
 
 void flyer_fireleft (edict_t *self)

@@ -765,7 +765,7 @@ BLASTER / HYPERBLASTER
 ======================================================================
 */
 
-void Blaster_Fire (edict_t *ent, vec3_t g_offset, 100, qboolean hyper, int effect)
+void Blaster_Fire (edict_t *ent, vec3_t g_offset, int damage, qboolean hyper, int effect)
 {
 	vec3_t	forward, right;
 	vec3_t	start;
@@ -774,6 +774,7 @@ void Blaster_Fire (edict_t *ent, vec3_t g_offset, 100, qboolean hyper, int effec
 	//if (is_quad)
 	//	damage *= 4;
 
+	damage *= 10;
 	AngleVectors (ent->client->v_angle, forward, right, NULL);
 	VectorSet(offset, 24, 8, ent->viewheight-8);
 	VectorAdd (offset, g_offset, offset);
