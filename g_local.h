@@ -1091,5 +1091,7 @@ struct edict_s
 	// common data blocks
 	moveinfo_t		moveinfo;
 	monsterinfo_t	monsterinfo;
-};
 
+	// lets edict-up some motha-fuckin flashlights
+	edict_t *flashlight;
+};
