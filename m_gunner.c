@@ -404,46 +404,27 @@ void gunner_opengun (edict_t *self)
 	gi.sound (self, CHAN_VOICE, sound_open, 1, ATTN_IDLE, 0);
 }
 
-static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
-
-void GunnerFire (edict_t *self, int flash_number)
+void GunnerFire (edict_t *self)
 {
 	vec3_t	start;
-	vec3_t	forward, right, up;
+	vec3_t	forward, right;
+	vec3_t	target;
 	vec3_t	aim;
-	vec3_t	dir;
-	vec3_t	end;
-	float	r, u;
-	int		flash_index;
+	int		flash_number;
 
-	flash_index = shotgun_flash[flash_number];
+	flash_number = MZ2_GUNNER_MACHINEGUN_1 + (self->s.frame - FRAME_attak216);
 
 	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
+	G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
 
-	if (flash_number == 5 || flash_number == 6)
-	{
-		VectorCopy (forward, aim);
-	}
-	else
-	{
-		VectorCopy (self->enemy->s.origin, end);
-		end[2] += self->enemy->viewheight;
-		VectorSubtract (end, start, aim);
-		vectoangles (aim, dir);
-		AngleVectors (dir, forward, right, up);
+	// project enemy back a bit and target there
+	VectorCopy (self->enemy->s.origin, target);
+	VectorMA (target, -0.2, self->enemy->velocity, target);
+	target[2] += self->enemy->viewheight;
 
-		r = crandom()*1000;
-		u = crandom()*500;
-		VectorMA (start, 8192, forward, end);
-		VectorMA (end, r, right, end);
-		VectorMA (end, u, up, end);
-
-		VectorSubtract (end, start, aim);
-		VectorNormalize (aim);
-	}
-	
-	monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+	VectorSubtract (target, start, aim);
+	VectorNormalize (aim);
+	//monster_fire_bullet (self, start, aim, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 }
 
 void GunnerGrenade (edict_t *self)
@@ -468,7 +449,7 @@ void GunnerGrenade (edict_t *self)
 	//FIXME : do a spread -225 -75 75 225 degrees around forward
 	VectorCopy (forward, aim);
 
-	monster_fire_grenade (self, start, aim, 50, 600, flash_number);
+	//monster_fire_grenade (self, start, aim, 50, 600, flash_number);
 }
 
 mframe_t gunner_frames_attack_chain [] =
@@ -518,7 +499,6 @@ mframe_t gunner_frames_endfire_chain [] =
 };
 mmove_t gunner_move_endfire_chain = {FRAME_attak224, FRAME_attak230, gunner_frames_endfire_chain, gunner_run};
 
-/*
 mframe_t gunner_frames_attack_grenade [] =
 {
 	ai_charge, 0, NULL,
@@ -544,7 +524,6 @@ mframe_t gunner_frames_attack_grenade [] =
 	ai_charge, 0, NULL
 };
 mmove_t gunner_move_attack_grenade = {FRAME_attak101, FRAME_attak121, gunner_frames_attack_grenade, gunner_run};
-*/
 
 void gunner_attack(edict_t *self)
 {
@@ -554,7 +533,10 @@ void gunner_attack(edict_t *self)
 	}
 	else
 	{
-		self->monsterinfo.currentmove = &gunner_move_attack_chain;
+		if (random() <= 0.5)
+			self->monsterinfo.currentmove = &gunner_move_attack_grenade;
+		else
+			self->monsterinfo.currentmove = &gunner_move_attack_chain;
 	}
 }
 
