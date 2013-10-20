@@ -922,40 +922,40 @@ void SP_worldspawn (edict_t *ent)
 //
 
 	// 0 normal
-	gi.configstring(CS_LIGHTS+0, "c");
+	gi.configstring(CS_LIGHTS+0, "a");
 	
 	// 1 FLICKER (first variety)
-	gi.configstring(CS_LIGHTS+1, "c");
+	gi.configstring(CS_LIGHTS+1, "a");
 	
 	// 2 SLOW STRONG PULSE
-	gi.configstring(CS_LIGHTS+2, "c");
+	gi.configstring(CS_LIGHTS+2, "a");
 	
 	// 3 CANDLE (first variety)
-	gi.configstring(CS_LIGHTS+3, "c");
+	gi.configstring(CS_LIGHTS+3, "a");
 	
 	// 4 FAST STROBE
-	gi.configstring(CS_LIGHTS+4, "c");
+	gi.configstring(CS_LIGHTS+4, "a");
 	
 	// 5 GENTLE PULSE 1
-	gi.configstring(CS_LIGHTS+5, "c");
+	gi.configstring(CS_LIGHTS+5, "a");
 	
 	// 6 FLICKER (second variety)
-	gi.configstring(CS_LIGHTS+6, "c");
+	gi.configstring(CS_LIGHTS+6, "a");
 	
 	// 7 CANDLE (second variety)
-	gi.configstring(CS_LIGHTS+7, "c");
+	gi.configstring(CS_LIGHTS+7, "a");
 	
 	// 8 CANDLE (third variety)
-	gi.configstring(CS_LIGHTS+8, "c");
+	gi.configstring(CS_LIGHTS+8, "a");
 	
 	// 9 SLOW STROBE (fourth variety)
-	gi.configstring(CS_LIGHTS+9, "c");
+	gi.configstring(CS_LIGHTS+9, "a");
 	
 	// 10 FLUORESCENT FLICKER
-	gi.configstring(CS_LIGHTS+10,"c");
+	gi.configstring(CS_LIGHTS+10,"a");
 
 	// 11 SLOW PULSE NOT FADE TO BLACK
-	gi.configstring(CS_LIGHTS+11,"c");
+	gi.configstring(CS_LIGHTS+11,"a");
 	
 	// styles 32-62 are assigned by the light program for switchable lights
 
