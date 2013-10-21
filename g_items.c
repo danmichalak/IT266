@@ -1068,7 +1068,7 @@ always owned, never in the world
 /*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_shotgun", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1091,7 +1091,7 @@ always owned, never in the world
 /*QUAKED weapon_supershotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_supershotgun", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1114,7 +1114,7 @@ always owned, never in the world
 /*QUAKED weapon_machinegun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_machinegun", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1137,7 +1137,7 @@ always owned, never in the world
 /*QUAKED weapon_chaingun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_chaingun", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1160,7 +1160,7 @@ always owned, never in the world
 /*QUAKED ammo_grenades (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_grenades",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1183,7 +1183,7 @@ always owned, never in the world
 /*QUAKED weapon_grenadelauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_grenadelauncher",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1206,7 +1206,7 @@ always owned, never in the world
 /*QUAKED weapon_rocketlauncher (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_rocketlauncher",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1229,7 +1229,7 @@ always owned, never in the world
 /*QUAKED weapon_hyperblaster (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_hyperblaster", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1252,7 +1252,7 @@ always owned, never in the world
 /*QUAKED weapon_railgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_railgun", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1275,7 +1275,7 @@ always owned, never in the world
 /*QUAKED weapon_bfg (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"weapon_bfg",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1302,7 +1302,7 @@ always owned, never in the world
 /*QUAKED ammo_shells (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_shells",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1325,7 +1325,7 @@ always owned, never in the world
 /*QUAKED ammo_bullets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_bullets",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1348,7 +1348,7 @@ always owned, never in the world
 /*QUAKED ammo_cells (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_cells",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1371,7 +1371,7 @@ always owned, never in the world
 /*QUAKED ammo_rockets (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_rockets",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1394,7 +1394,7 @@ always owned, never in the world
 /*QUAKED ammo_slugs (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"ammo_slugs",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1421,7 +1421,7 @@ always owned, never in the world
 /*QUAKED item_quad (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"item_quad", 
+		NULL, 
 		NULL,
 		NULL,
 		NULL,
@@ -1444,7 +1444,7 @@ always owned, never in the world
 /*QUAKED item_invulnerability (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"item_invulnerability",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1467,7 +1467,7 @@ always owned, never in the world
 /*QUAKED item_silencer (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"item_silencer",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1537,7 +1537,7 @@ always owned, never in the world
 Special item that gives +2 to maximum health
 */
 	{
-		"item_ancient_head",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1561,7 +1561,7 @@ Special item that gives +2 to maximum health
 gives +1 to maximum health
 */
 	{
-		"item_adrenaline",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1584,7 +1584,7 @@ gives +1 to maximum health
 /*QUAKED item_bandolier (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"item_bandolier",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1607,7 +1607,7 @@ gives +1 to maximum health
 /*QUAKED item_pack (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		"item_pack",
+		NULL,
 		NULL,
 		NULL,
 		NULL,
