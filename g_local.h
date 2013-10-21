@@ -943,7 +943,7 @@ struct gclient_s
 	qboolean	update_chase;		// need to update chase info?
 };
 
-
+//Monster def function, I believe
 struct edict_s
 {
 	entity_state_t	s;
