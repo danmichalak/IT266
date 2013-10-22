@@ -447,7 +447,7 @@ void ChickRocket (edict_t *self)
 
 		monster_fire_rocket (self, start, dir, 50, 500, MZ2_CHICK_ROCKET_1);
 	}
-}	
+}
 
 void Chick_PreAttack1 (edict_t *self)
 {

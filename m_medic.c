@@ -320,32 +320,45 @@ void medic_pain (edict_t *self, edict_t *other, float kick, int damage)
 	}
 }
 
+static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
+
 void medic_fire_blaster (edict_t *self)
 {
 	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
-		vec3_t	start;
-		vec3_t	forward, right;
-		vec3_t	end;
-		vec3_t	dir;
-		int		effect;
+		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
+			vec3_t	start;
+			vec3_t	forward, right, up;
+			vec3_t	aim;
+			vec3_t	dir;
+			vec3_t	end;
+			float	r, u;
+			int		flash_index;
 
-		if ((self->s.frame == FRAME_attack9) || (self->s.frame == FRAME_attack12))
-			effect = EF_BLASTER;
-		else if ((self->s.frame == FRAME_attack19) || (self->s.frame == FRAME_attack22) || (self->s.frame == FRAME_attack25) || (self->s.frame == FRAME_attack28))
-			effect = EF_HYPERBLASTER;
-		else
-			effect = 0;
+			flash_index = shotgun_flash[0];
+			
+			AngleVectors (self->s.angles, forward, right, NULL);
+			G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
 
-		AngleVectors (self->s.angles, forward, right, NULL);
-		G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_MEDIC_BLASTER_1], forward, right, start);
+			VectorCopy (self->enemy->s.origin, end);
+			end[2] += self->enemy->viewheight;
+			VectorSubtract (end, start, aim);
+			vectoangles (aim, dir);
+			AngleVectors (dir, forward, right, up);
 
-		VectorCopy (self->enemy->s.origin, end);
-		end[2] += self->enemy->viewheight;
-		VectorSubtract (end, start, dir);
+			r = crandom()*1000;
+			u = crandom()*500;
+			VectorMA (start, 8192, forward, end);
+			VectorMA (end, r, right, end);
+			VectorMA (end, u, up, end);
 
-		monster_fire_blaster (self, start, dir, 2, 1000, MZ2_MEDIC_BLASTER_1, effect);
+			VectorSubtract (end, start, aim);
+			VectorNormalize (aim);
+			
+			monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		}
 	}
 }
+
 
 
 void medic_dead (edict_t *self)

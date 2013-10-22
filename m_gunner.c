@@ -429,7 +429,41 @@ void GunnerFire (edict_t *self)
 	}
 }
 
-void GunnerGrenade (edict_t *self) {
+static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
+
+void GunnerGrenade (edict_t *self)
+{
+	if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
+		vec3_t	start;
+		vec3_t	forward, right, up;
+		vec3_t	aim;
+		vec3_t	dir;
+		vec3_t	end;
+		float	r, u;
+		int		flash_index;
+
+		flash_index = shotgun_flash[0];
+		
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
+
+		VectorCopy (self->enemy->s.origin, end);
+		end[2] += self->enemy->viewheight;
+		VectorSubtract (end, start, aim);
+		vectoangles (aim, dir);
+		AngleVectors (dir, forward, right, up);
+
+		r = crandom()*1000;
+		u = crandom()*500;
+		VectorMA (start, 8192, forward, end);
+		VectorMA (end, r, right, end);
+		VectorMA (end, u, up, end);
+
+		VectorSubtract (end, start, aim);
+		VectorNormalize (aim);
+		
+		monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+	}
 }
 
 mframe_t gunner_frames_attack_chain [] =

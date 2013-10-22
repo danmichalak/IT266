@@ -37,28 +37,42 @@ void floater_run (edict_t *self);
 void floater_wham (edict_t *self);
 void floater_zap (edict_t *self);
 
+static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
 
 void floater_fire_blaster (edict_t *self)
 {
 	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
-		vec3_t	start;
-		vec3_t	forward, right;
-		vec3_t	end;
-		vec3_t	dir;
-		int		effect;
+		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
+			vec3_t	start;
+			vec3_t	forward, right, up;
+			vec3_t	aim;
+			vec3_t	dir;
+			vec3_t	end;
+			float	r, u;
+			int		flash_index;
 
-		if ((self->s.frame == FRAME_attak104) || (self->s.frame == FRAME_attak107))
-			effect = EF_HYPERBLASTER;
-		else
-			effect = 0;
-		AngleVectors (self->s.angles, forward, right, NULL);
-		G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_FLOAT_BLASTER_1], forward, right, start);
+			flash_index = shotgun_flash[0];
+			
+			AngleVectors (self->s.angles, forward, right, NULL);
+			G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
 
-		VectorCopy (self->enemy->s.origin, end);
-		end[2] += self->enemy->viewheight;
-		VectorSubtract (end, start, dir);
+			VectorCopy (self->enemy->s.origin, end);
+			end[2] += self->enemy->viewheight;
+			VectorSubtract (end, start, aim);
+			vectoangles (aim, dir);
+			AngleVectors (dir, forward, right, up);
 
-		monster_fire_blaster (self, start, dir, 1, 1000, MZ2_FLOAT_BLASTER_1, effect);
+			r = crandom()*1000;
+			u = crandom()*500;
+			VectorMA (start, 8192, forward, end);
+			VectorMA (end, r, right, end);
+			VectorMA (end, u, up, end);
+
+			VectorSubtract (end, start, aim);
+			VectorNormalize (aim);
+			
+			monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		}
 	}
 }
 

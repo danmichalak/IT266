@@ -241,41 +241,43 @@ vec3_t	aimangles[] =
 void InfantryMachineGun (edict_t *self)
 {
 	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
-		vec3_t	start, target;
-		vec3_t	forward, right;
-		vec3_t	vec;
-		int		flash_number;
+		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
+			vec3_t	start, target;
+			vec3_t	forward, right;
+			vec3_t	vec;
+			int		flash_number;
 
-		if (self->s.frame == FRAME_attak111)
-		{
-			flash_number = MZ2_INFANTRY_MACHINEGUN_1;
-			AngleVectors (self->s.angles, forward, right, NULL);
-			G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
-
-			if (self->enemy)
+			if (self->s.frame == FRAME_attak111)
 			{
-				VectorMA (self->enemy->s.origin, -0.2, self->enemy->velocity, target);
-				target[2] += self->enemy->viewheight;
-				VectorSubtract (target, start, forward);
-				VectorNormalize (forward);
+				flash_number = MZ2_INFANTRY_MACHINEGUN_1;
+				AngleVectors (self->s.angles, forward, right, NULL);
+				G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+
+				if (self->enemy)
+				{
+					VectorMA (self->enemy->s.origin, -0.2, self->enemy->velocity, target);
+					target[2] += self->enemy->viewheight;
+					VectorSubtract (target, start, forward);
+					VectorNormalize (forward);
+				}
+				else
+				{
+					AngleVectors (self->s.angles, forward, right, NULL);
+				}
 			}
 			else
 			{
+				flash_number = MZ2_INFANTRY_MACHINEGUN_2 + (self->s.frame - FRAME_death211);
+
 				AngleVectors (self->s.angles, forward, right, NULL);
+				G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+
+				VectorSubtract (self->s.angles, aimangles[flash_number-MZ2_INFANTRY_MACHINEGUN_2], vec);
+				AngleVectors (vec, forward, NULL, NULL);
 			}
+
+			monster_fire_bullet (self, start, forward, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 		}
-		else
-		{
-			flash_number = MZ2_INFANTRY_MACHINEGUN_2 + (self->s.frame - FRAME_death211);
-
-			AngleVectors (self->s.angles, forward, right, NULL);
-			G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
-
-			VectorSubtract (self->s.angles, aimangles[flash_number-MZ2_INFANTRY_MACHINEGUN_2], vec);
-			AngleVectors (vec, forward, NULL, NULL);
-		}
-
-		monster_fire_bullet (self, start, forward, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 	}
 }
 

@@ -344,9 +344,9 @@ mframe_t flyer_frames_bankleft [] =
 };
 mmove_t flyer_move_bankleft = {FRAME_bankl01, FRAME_bankl07, flyer_frames_bankleft, NULL};		
 
-static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
+static int machinegun_flash [] = {MZ2_SOLDIER_MACHINEGUN_1, MZ2_SOLDIER_MACHINEGUN_2, MZ2_SOLDIER_MACHINEGUN_3, MZ2_SOLDIER_MACHINEGUN_4, MZ2_SOLDIER_MACHINEGUN_5, MZ2_SOLDIER_MACHINEGUN_6, MZ2_SOLDIER_MACHINEGUN_7, MZ2_SOLDIER_MACHINEGUN_8};
 
-void flyer_fire (edict_t *self, int flash_number)
+void flyer_fire (edict_t *self)
 {
 	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
 		vec3_t	start;
@@ -357,36 +357,30 @@ void flyer_fire (edict_t *self, int flash_number)
 		float	r, u;
 		int		flash_index;
 
-		flash_index = shotgun_flash[flash_number];
+		flash_index = machinegun_flash[1];
 
 		AngleVectors (self->s.angles, forward, right, NULL);
 		G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
 
-		if (flash_number == 5 || flash_number == 6)
-		{
-			VectorCopy (forward, aim);
-		}
-		else
-		{
-			VectorCopy (self->enemy->s.origin, end);
-			end[2] += self->enemy->viewheight;
-			VectorSubtract (end, start, aim);
-			vectoangles (aim, dir);
-			AngleVectors (dir, forward, right, up);
-
-			r = crandom()*1000;
-			u = crandom()*500;
-			VectorMA (start, 8192, forward, end);
-			VectorMA (end, r, right, end);
-			VectorMA (end, u, up, end);
-
-			VectorSubtract (end, start, aim);
-			VectorNormalize (aim);
-		}
+		VectorCopy (self->enemy->s.origin, end);
+		end[2] += self->enemy->viewheight;
+		VectorSubtract (end, start, aim);
+		vectoangles (aim, dir);
+		AngleVectors (dir, forward, right, up);
 		
-		monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		r = crandom()*1000;
+		u = crandom()*500;
+		VectorMA (start, 8192, forward, end);
+		VectorMA (end, r, right, end);
+		VectorMA (end, u, up, end);
+
+		VectorSubtract (end, start, aim);
+		VectorNormalize (aim);
+
+		monster_fire_bullet (self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
 	}
 }
+
 
 void flyer_fireleft (edict_t *self)
 {
