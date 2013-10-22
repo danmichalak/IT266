@@ -436,7 +436,9 @@ void soldier_pain (edict_t *self, edict_t *other, float kick, int damage)
 // ATTACK
 //
 
+static int blaster_flash [] = {MZ2_SOLDIER_BLASTER_1, MZ2_SOLDIER_BLASTER_2, MZ2_SOLDIER_BLASTER_3, MZ2_SOLDIER_BLASTER_4, MZ2_SOLDIER_BLASTER_5, MZ2_SOLDIER_BLASTER_6, MZ2_SOLDIER_BLASTER_7, MZ2_SOLDIER_BLASTER_8};
 static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
+static int machinegun_flash [] = {MZ2_SOLDIER_MACHINEGUN_1, MZ2_SOLDIER_MACHINEGUN_2, MZ2_SOLDIER_MACHINEGUN_3, MZ2_SOLDIER_MACHINEGUN_4, MZ2_SOLDIER_MACHINEGUN_5, MZ2_SOLDIER_MACHINEGUN_6, MZ2_SOLDIER_MACHINEGUN_7, MZ2_SOLDIER_MACHINEGUN_8};
 
 void soldier_fire (edict_t *self, int flash_number)
 {
@@ -449,7 +451,10 @@ void soldier_fire (edict_t *self, int flash_number)
 		float	r, u;
 		int		flash_index;
 
-		flash_index = shotgun_flash[flash_number];
+		if (self->s.skinnum < 4)
+			flash_index = shotgun_flash[flash_number];
+		else
+			flash_index = machinegun_flash[flash_number];
 
 		AngleVectors (self->s.angles, forward, right, NULL);
 		G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
@@ -475,9 +480,23 @@ void soldier_fire (edict_t *self, int flash_number)
 			VectorSubtract (end, start, aim);
 			VectorNormalize (aim);
 		}
-		
-		if ((range (self, self->enemy) == RANGE_NEAR) || (range (self, self->enemy) == RANGE_MELEE))
+
+		if (self->s.skinnum <= 3)
+		{
 			monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		}
+		else
+		{
+			if (!(self->monsterinfo.aiflags & AI_HOLD_FRAME))
+				self->monsterinfo.pausetime = level.time + (3 + rand() % 8) * FRAMETIME;
+
+			monster_fire_bullet (self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
+
+			if (level.time >= self->monsterinfo.pausetime)
+				self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+			else
+				self->monsterinfo.aiflags |= AI_HOLD_FRAME;
+		}
 	}
 }
 
