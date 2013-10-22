@@ -148,18 +148,22 @@ void gladiator_melee(edict_t *self)
 
 void GladiatorGun (edict_t *self)
 {
-	vec3_t	start;
-	vec3_t	dir;
-	vec3_t	forward, right;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
+			vec3_t	start;
+			vec3_t	dir;
+			vec3_t	forward, right;
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_GLADIATOR_RAILGUN_1], forward, right, start);
+			AngleVectors (self->s.angles, forward, right, NULL);
+			G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_GLADIATOR_RAILGUN_1], forward, right, start);
 
-	// calc direction to where we targted
-	VectorSubtract (self->pos1, start, dir);
-	VectorNormalize (dir);
+			// calc direction to where we targted
+			VectorSubtract (self->pos1, start, dir);
+			VectorNormalize (dir);
 
-	monster_fire_railgun (self, start, dir, 50, 100, MZ2_GLADIATOR_RAILGUN_1);
+			monster_fire_railgun (self, start, dir, 50, 100, MZ2_GLADIATOR_RAILGUN_1);
+		}
+	}
 }
 
 mframe_t gladiator_frames_attack_gun [] =
