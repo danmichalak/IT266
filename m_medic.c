@@ -322,27 +322,29 @@ void medic_pain (edict_t *self, edict_t *other, float kick, int damage)
 
 void medic_fire_blaster (edict_t *self)
 {
-	vec3_t	start;
-	vec3_t	forward, right;
-	vec3_t	end;
-	vec3_t	dir;
-	int		effect;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start;
+		vec3_t	forward, right;
+		vec3_t	end;
+		vec3_t	dir;
+		int		effect;
 
-	if ((self->s.frame == FRAME_attack9) || (self->s.frame == FRAME_attack12))
-		effect = EF_BLASTER;
-	else if ((self->s.frame == FRAME_attack19) || (self->s.frame == FRAME_attack22) || (self->s.frame == FRAME_attack25) || (self->s.frame == FRAME_attack28))
-		effect = EF_HYPERBLASTER;
-	else
-		effect = 0;
+		if ((self->s.frame == FRAME_attack9) || (self->s.frame == FRAME_attack12))
+			effect = EF_BLASTER;
+		else if ((self->s.frame == FRAME_attack19) || (self->s.frame == FRAME_attack22) || (self->s.frame == FRAME_attack25) || (self->s.frame == FRAME_attack28))
+			effect = EF_HYPERBLASTER;
+		else
+			effect = 0;
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_MEDIC_BLASTER_1], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_MEDIC_BLASTER_1], forward, right, start);
 
-	VectorCopy (self->enemy->s.origin, end);
-	end[2] += self->enemy->viewheight;
-	VectorSubtract (end, start, dir);
+		VectorCopy (self->enemy->s.origin, end);
+		end[2] += self->enemy->viewheight;
+		VectorSubtract (end, start, dir);
 
-	monster_fire_blaster (self, start, dir, 2, 1000, MZ2_MEDIC_BLASTER_1, effect);
+		monster_fire_blaster (self, start, dir, 2, 1000, MZ2_MEDIC_BLASTER_1, effect);
+	}
 }
 
 

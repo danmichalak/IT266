@@ -406,50 +406,54 @@ void gunner_opengun (edict_t *self)
 
 void GunnerFire (edict_t *self)
 {
-	vec3_t	start;
-	vec3_t	forward, right;
-	vec3_t	target;
-	vec3_t	aim;
-	int		flash_number;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start;
+		vec3_t	forward, right;
+		vec3_t	target;
+		vec3_t	aim;
+		int		flash_number;
 
-	flash_number = MZ2_GUNNER_MACHINEGUN_1 + (self->s.frame - FRAME_attak216);
+		flash_number = MZ2_GUNNER_MACHINEGUN_1 + (self->s.frame - FRAME_attak216);
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
 
-	// project enemy back a bit and target there
-	VectorCopy (self->enemy->s.origin, target);
-	VectorMA (target, -0.2, self->enemy->velocity, target);
-	target[2] += self->enemy->viewheight;
+		// project enemy back a bit and target there
+		VectorCopy (self->enemy->s.origin, target);
+		VectorMA (target, -0.2, self->enemy->velocity, target);
+		target[2] += self->enemy->viewheight;
 
-	VectorSubtract (target, start, aim);
-	VectorNormalize (aim);
-	//monster_fire_bullet (self, start, aim, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
+		VectorSubtract (target, start, aim);
+		VectorNormalize (aim);
+		monster_fire_bullet (self, start, aim, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
+	}
 }
 
 void GunnerGrenade (edict_t *self)
 {
-	vec3_t	start;
-	vec3_t	forward, right;
-	vec3_t	aim;
-	int		flash_number;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start;
+		vec3_t	forward, right;
+		vec3_t	aim;
+		int		flash_number;
 
-	if (self->s.frame == FRAME_attak105)
-		flash_number = MZ2_GUNNER_GRENADE_1;
-	else if (self->s.frame == FRAME_attak108)
-		flash_number = MZ2_GUNNER_GRENADE_2;
-	else if (self->s.frame == FRAME_attak111)
-		flash_number = MZ2_GUNNER_GRENADE_3;
-	else // (self->s.frame == FRAME_attak114)
-		flash_number = MZ2_GUNNER_GRENADE_4;
+		if (self->s.frame == FRAME_attak105)
+			flash_number = MZ2_GUNNER_GRENADE_1;
+		else if (self->s.frame == FRAME_attak108)
+			flash_number = MZ2_GUNNER_GRENADE_2;
+		else if (self->s.frame == FRAME_attak111)
+			flash_number = MZ2_GUNNER_GRENADE_3;
+		else // (self->s.frame == FRAME_attak114)
+			flash_number = MZ2_GUNNER_GRENADE_4;
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
 
-	//FIXME : do a spread -225 -75 75 225 degrees around forward
-	VectorCopy (forward, aim);
+		//FIXME : do a spread -225 -75 75 225 degrees around forward
+		VectorCopy (forward, aim);
 
-	//monster_fire_grenade (self, start, aim, 50, 600, flash_number);
+		monster_fire_grenade (self, start, aim, 50, 600, flash_number);
+	}
 }
 
 mframe_t gunner_frames_attack_chain [] =

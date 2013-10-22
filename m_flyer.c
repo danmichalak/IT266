@@ -348,42 +348,44 @@ static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2
 
 void flyer_fire (edict_t *self, int flash_number)
 {
-	vec3_t	start;
-	vec3_t	forward, right, up;
-	vec3_t	aim;
-	vec3_t	dir;
-	vec3_t	end;
-	float	r, u;
-	int		flash_index;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start;
+		vec3_t	forward, right, up;
+		vec3_t	aim;
+		vec3_t	dir;
+		vec3_t	end;
+		float	r, u;
+		int		flash_index;
 
-	flash_index = shotgun_flash[flash_number];
+		flash_index = shotgun_flash[flash_number];
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
 
-	if (flash_number == 5 || flash_number == 6)
-	{
-		VectorCopy (forward, aim);
+		if (flash_number == 5 || flash_number == 6)
+		{
+			VectorCopy (forward, aim);
+		}
+		else
+		{
+			VectorCopy (self->enemy->s.origin, end);
+			end[2] += self->enemy->viewheight;
+			VectorSubtract (end, start, aim);
+			vectoangles (aim, dir);
+			AngleVectors (dir, forward, right, up);
+
+			r = crandom()*1000;
+			u = crandom()*500;
+			VectorMA (start, 8192, forward, end);
+			VectorMA (end, r, right, end);
+			VectorMA (end, u, up, end);
+
+			VectorSubtract (end, start, aim);
+			VectorNormalize (aim);
+		}
+		
+		monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 	}
-	else
-	{
-		VectorCopy (self->enemy->s.origin, end);
-		end[2] += self->enemy->viewheight;
-		VectorSubtract (end, start, aim);
-		vectoangles (aim, dir);
-		AngleVectors (dir, forward, right, up);
-
-		r = crandom()*1000;
-		u = crandom()*500;
-		VectorMA (start, 8192, forward, end);
-		VectorMA (end, r, right, end);
-		VectorMA (end, u, up, end);
-
-		VectorSubtract (end, start, aim);
-		VectorNormalize (aim);
-	}
-	
-	monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 }
 
 void flyer_fireleft (edict_t *self)

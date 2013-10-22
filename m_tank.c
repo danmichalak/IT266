@@ -311,27 +311,29 @@ void tank_pain (edict_t *self, edict_t *other, float kick, int damage)
 
 void TankBlaster (edict_t *self)
 {
-	vec3_t	forward, right;
-	vec3_t	start;
-	vec3_t	end;
-	vec3_t	dir;
-	int		flash_number;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	forward, right;
+		vec3_t	start;
+		vec3_t	end;
+		vec3_t	dir;
+		int		flash_number;
 
-	if (self->s.frame == FRAME_attak110)
-		flash_number = MZ2_TANK_BLASTER_1;
-	else if (self->s.frame == FRAME_attak113)
-		flash_number = MZ2_TANK_BLASTER_2;
-	else // (self->s.frame == FRAME_attak116)
-		flash_number = MZ2_TANK_BLASTER_3;
+		if (self->s.frame == FRAME_attak110)
+			flash_number = MZ2_TANK_BLASTER_1;
+		else if (self->s.frame == FRAME_attak113)
+			flash_number = MZ2_TANK_BLASTER_2;
+		else // (self->s.frame == FRAME_attak116)
+			flash_number = MZ2_TANK_BLASTER_3;
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
 
-	VectorCopy (self->enemy->s.origin, end);
-	end[2] += self->enemy->viewheight;
-	VectorSubtract (end, start, dir);
+		VectorCopy (self->enemy->s.origin, end);
+		end[2] += self->enemy->viewheight;
+		VectorSubtract (end, start, dir);
 
-	monster_fire_blaster (self, start, dir, 30, 800, flash_number, EF_BLASTER);
+		monster_fire_blaster (self, start, dir, 30, 800, flash_number, EF_BLASTER);
+	}
 }	
 
 void TankStrike (edict_t *self)
@@ -367,38 +369,40 @@ void TankRocket (edict_t *self)
 
 void TankMachineGun (edict_t *self)
 {
-	vec3_t	dir;
-	vec3_t	vec;
-	vec3_t	start;
-	vec3_t	forward, right;
-	int		flash_number;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	dir;
+		vec3_t	vec;
+		vec3_t	start;
+		vec3_t	forward, right;
+		int		flash_number;
 
-	flash_number = MZ2_TANK_MACHINEGUN_1 + (self->s.frame - FRAME_attak406);
+		flash_number = MZ2_TANK_MACHINEGUN_1 + (self->s.frame - FRAME_attak406);
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
 
-	if (self->enemy)
-	{
-		VectorCopy (self->enemy->s.origin, vec);
-		vec[2] += self->enemy->viewheight;
-		VectorSubtract (vec, start, vec);
-		vectoangles (vec, vec);
-		dir[0] = vec[0];
+		if (self->enemy)
+		{
+			VectorCopy (self->enemy->s.origin, vec);
+			vec[2] += self->enemy->viewheight;
+			VectorSubtract (vec, start, vec);
+			vectoangles (vec, vec);
+			dir[0] = vec[0];
+		}
+		else
+		{
+			dir[0] = 0;
+		}
+		if (self->s.frame <= FRAME_attak415)
+			dir[1] = self->s.angles[1] - 8 * (self->s.frame - FRAME_attak411);
+		else
+			dir[1] = self->s.angles[1] + 8 * (self->s.frame - FRAME_attak419);
+		dir[2] = 0;
+
+		AngleVectors (dir, forward, NULL, NULL);
+
+		monster_fire_bullet (self, start, forward, 20, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 	}
-	else
-	{
-		dir[0] = 0;
-	}
-	if (self->s.frame <= FRAME_attak415)
-		dir[1] = self->s.angles[1] - 8 * (self->s.frame - FRAME_attak411);
-	else
-		dir[1] = self->s.angles[1] + 8 * (self->s.frame - FRAME_attak419);
-	dir[2] = 0;
-
-	AngleVectors (dir, forward, NULL, NULL);
-
-	monster_fire_bullet (self, start, forward, 20, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 }	
 
 

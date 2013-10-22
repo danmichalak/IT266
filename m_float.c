@@ -40,24 +40,26 @@ void floater_zap (edict_t *self);
 
 void floater_fire_blaster (edict_t *self)
 {
-	vec3_t	start;
-	vec3_t	forward, right;
-	vec3_t	end;
-	vec3_t	dir;
-	int		effect;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start;
+		vec3_t	forward, right;
+		vec3_t	end;
+		vec3_t	dir;
+		int		effect;
 
-	if ((self->s.frame == FRAME_attak104) || (self->s.frame == FRAME_attak107))
-		effect = EF_HYPERBLASTER;
-	else
-		effect = 0;
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_FLOAT_BLASTER_1], forward, right, start);
+		if ((self->s.frame == FRAME_attak104) || (self->s.frame == FRAME_attak107))
+			effect = EF_HYPERBLASTER;
+		else
+			effect = 0;
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_FLOAT_BLASTER_1], forward, right, start);
 
-	VectorCopy (self->enemy->s.origin, end);
-	end[2] += self->enemy->viewheight;
-	VectorSubtract (end, start, dir);
+		VectorCopy (self->enemy->s.origin, end);
+		end[2] += self->enemy->viewheight;
+		VectorSubtract (end, start, dir);
 
-	monster_fire_blaster (self, start, dir, 1, 1000, MZ2_FLOAT_BLASTER_1, effect);
+		monster_fire_blaster (self, start, dir, 1, 1000, MZ2_FLOAT_BLASTER_1, effect);
+	}
 }
 
 

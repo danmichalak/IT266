@@ -431,20 +431,22 @@ void ChickSlash (edict_t *self)
 
 void ChickRocket (edict_t *self)
 {
-	vec3_t	forward, right;
-	vec3_t	start;
-	vec3_t	dir;
-	vec3_t	vec;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	forward, right;
+		vec3_t	start;
+		vec3_t	dir;
+		vec3_t	vec;
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_CHICK_ROCKET_1], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[MZ2_CHICK_ROCKET_1], forward, right, start);
 
-	VectorCopy (self->enemy->s.origin, vec);
-	vec[2] += self->enemy->viewheight;
-	VectorSubtract (vec, start, dir);
-	VectorNormalize (dir);
+		VectorCopy (self->enemy->s.origin, vec);
+		vec[2] += self->enemy->viewheight;
+		VectorSubtract (vec, start, dir);
+		VectorNormalize (dir);
 
-	monster_fire_rocket (self, start, dir, 50, 500, MZ2_CHICK_ROCKET_1);
+		monster_fire_rocket (self, start, dir, 50, 500, MZ2_CHICK_ROCKET_1);
+	}
 }	
 
 void Chick_PreAttack1 (edict_t *self)
