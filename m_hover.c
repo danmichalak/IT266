@@ -444,7 +444,7 @@ void hover_fire_blaster (edict_t *self)
 		VectorSubtract (end, start, aim);
 		VectorNormalize (aim);
 		
-		monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		monster_fire_shotgun (self, start, aim, 3, 2, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 	}
 }
 
@@ -591,7 +591,7 @@ void SP_monster_hover (edict_t *self)
 	VectorSet (self->mins, -24, -24, -24);
 	VectorSet (self->maxs, 24, 24, 32);
 
-	self->health = 240;
+	self->health = 350;
 	self->gib_health = -100;
 	self->mass = 150;
 

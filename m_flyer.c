@@ -377,7 +377,7 @@ void flyer_fire (edict_t *self)
 		VectorSubtract (end, start, aim);
 		VectorNormalize (aim);
 
-		monster_fire_bullet (self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
+		monster_fire_bullet (self, start, aim, 3, 5, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
 	}
 }
 
@@ -421,7 +421,7 @@ void flyer_slash_left (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, self->mins[0], 0);
-	fire_hit (self, aim, 5, 0);
+	fire_hit (self, aim, 10, 0);
 	gi.sound (self, CHAN_WEAPON, sound_slash, 1, ATTN_NORM, 0);
 }
 
@@ -599,7 +599,7 @@ void SP_monster_flyer (edict_t *self)
 
 	self->s.sound = gi.soundindex ("flyer/flyidle1.wav");
 
-	self->health = 50;
+	self->health = 150;
 	self->mass = 50;
 
 	self->pain = flyer_pain;

@@ -425,7 +425,7 @@ void ChickSlash (edict_t *self)
 
 	VectorSet (aim, MELEE_DISTANCE, self->mins[0], 10);
 	gi.sound (self, CHAN_WEAPON, sound_melee_swing, 1, ATTN_NORM, 0);
-	fire_hit (self, aim, (10 + (rand() %6)), 100);
+	fire_hit (self, aim, (25 + (rand() %6)), 100);
 }
 
 
@@ -636,7 +636,7 @@ void SP_monster_chick (edict_t *self)
 	VectorSet (self->mins, -16, -16, 0);
 	VectorSet (self->maxs, 16, 16, 56);
 
-	self->health = 175;
+	self->health = 300;
 	self->gib_health = -70;
 	self->mass = 200;
 

@@ -444,7 +444,7 @@ void brain_tentacle_attack (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, 0, 8);
-	if (fire_hit (self, aim, (10 + (rand() %5)), -600) && skill->value > 0)
+	if (fire_hit (self, aim, (25 + (rand() %5)), -600) && skill->value > 0)
 		self->spawnflags |= 65536;
 	gi.sound (self, CHAN_WEAPON, sound_tentacles_retract, 1, ATTN_NORM, 0);
 }
@@ -628,7 +628,7 @@ void SP_monster_brain (edict_t *self)
 	VectorSet (self->mins, -16, -16, -24);
 	VectorSet (self->maxs, 16, 16, 32);
 
-	self->health = 300;
+	self->health = 400;
 	self->gib_health = -150;
 	self->mass = 400;
 

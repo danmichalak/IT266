@@ -323,14 +323,14 @@ void parasite_drain_attack (edict_t *self)
 
 	if (self->s.frame == FRAME_drain03)
 	{
-		damage = 5;
+		damage = 10;
 		gi.sound (self->enemy, CHAN_AUTO, sound_impact, 1, ATTN_NORM, 0);
 	}
 	else
 	{
 		if (self->s.frame == FRAME_drain04)
 			gi.sound (self, CHAN_WEAPON, sound_suck, 1, ATTN_NORM, 0);
-		damage = 2;
+		damage = 5;
 	}
 
 	gi.WriteByte (svc_temp_entity);
@@ -510,7 +510,7 @@ void SP_monster_parasite (edict_t *self)
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
 
-	self->health = 175;
+	self->health = 250;
 	self->gib_health = -50;
 	self->mass = 250;
 

@@ -238,7 +238,7 @@ void mutant_hit_left (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, self->mins[0], 8);
-	if (fire_hit (self, aim, (10 + (rand() %5)), 100))
+	if (fire_hit (self, aim, (25 + (rand() %5)), 100))
 		gi.sound (self, CHAN_WEAPON, sound_hit, 1, ATTN_NORM, 0);
 	else
 		gi.sound (self, CHAN_WEAPON, sound_swing, 1, ATTN_NORM, 0);
@@ -617,7 +617,7 @@ void SP_monster_mutant (edict_t *self)
 	VectorSet (self->mins, -32, -32, -24);
 	VectorSet (self->maxs, 32, 32, 48);
 
-	self->health = 300;
+	self->health = 400;
 	self->gib_health = -120;
 	self->mass = 300;
 

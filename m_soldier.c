@@ -441,62 +441,60 @@ static int machinegun_flash [] = {MZ2_SOLDIER_MACHINEGUN_1, MZ2_SOLDIER_MACHINEG
 
 void soldier_fire (edict_t *self, int flash_number)
 {
-	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
-		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
-			vec3_t	start;
-			vec3_t	forward, right, up;
-			vec3_t	aim;
-			vec3_t	dir;
-			vec3_t	end;
-			float	r, u;
-			int		flash_index;
+	if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
+		vec3_t	start;
+		vec3_t	forward, right, up;
+		vec3_t	aim;
+		vec3_t	dir;
+		vec3_t	end;
+		float	r, u;
+		int		flash_index;
 
-			if (self->s.skinnum < 4)
-				flash_index = shotgun_flash[flash_number];
+		if (self->s.skinnum < 4)
+			flash_index = shotgun_flash[flash_number];
+		else
+			flash_index = machinegun_flash[flash_number];
+
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
+
+		if (flash_number == 5 || flash_number == 6)
+		{
+			VectorCopy (forward, aim);
+		}
+		else
+		{
+			VectorCopy (self->enemy->s.origin, end);
+			end[2] += self->enemy->viewheight;
+			VectorSubtract (end, start, aim);
+			vectoangles (aim, dir);
+			AngleVectors (dir, forward, right, up);
+
+			r = crandom()*1000;
+			u = crandom()*500;
+			VectorMA (start, 8192, forward, end);
+			VectorMA (end, r, right, end);
+			VectorMA (end, u, up, end);
+
+			VectorSubtract (end, start, aim);
+			VectorNormalize (aim);
+		}
+
+		if (self->s.skinnum <= 3)
+		{
+			monster_fire_shotgun (self, start, aim, 4, 2, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		}
+		else
+		{
+			if (!(self->monsterinfo.aiflags & AI_HOLD_FRAME))
+				self->monsterinfo.pausetime = level.time + (3 + rand() % 8) * FRAMETIME;
+
+			monster_fire_bullet (self, start, aim, 5, 5, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
+
+			if (level.time >= self->monsterinfo.pausetime)
+				self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
 			else
-				flash_index = machinegun_flash[flash_number];
-
-			AngleVectors (self->s.angles, forward, right, NULL);
-			G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
-
-			if (flash_number == 5 || flash_number == 6)
-			{
-				VectorCopy (forward, aim);
-			}
-			else
-			{
-				VectorCopy (self->enemy->s.origin, end);
-				end[2] += self->enemy->viewheight;
-				VectorSubtract (end, start, aim);
-				vectoangles (aim, dir);
-				AngleVectors (dir, forward, right, up);
-
-				r = crandom()*1000;
-				u = crandom()*500;
-				VectorMA (start, 8192, forward, end);
-				VectorMA (end, r, right, end);
-				VectorMA (end, u, up, end);
-
-				VectorSubtract (end, start, aim);
-				VectorNormalize (aim);
-			}
-
-			if (self->s.skinnum <= 3)
-			{
-				monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
-			}
-			else
-			{
-				if (!(self->monsterinfo.aiflags & AI_HOLD_FRAME))
-					self->monsterinfo.pausetime = level.time + (3 + rand() % 8) * FRAMETIME;
-
-				monster_fire_bullet (self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index);
-
-				if (level.time >= self->monsterinfo.pausetime)
-					self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
-				else
-					self->monsterinfo.aiflags |= AI_HOLD_FRAME;
-			}
+				self->monsterinfo.aiflags |= AI_HOLD_FRAME;
 		}
 	}
 }
@@ -1230,7 +1228,7 @@ void SP_monster_soldier_light (edict_t *self)
 	gi.soundindex ("soldier/solatck2.wav");
 
 	self->s.skinnum = 0;
-	self->health = 20;
+	self->health = 50;
 	self->gib_health = -30;
 }
 
@@ -1251,7 +1249,7 @@ void SP_monster_soldier (edict_t *self)
 	gi.soundindex ("soldier/solatck1.wav");
 
 	self->s.skinnum = 2;
-	self->health = 30;
+	self->health = 75;
 	self->gib_health = -30;
 }
 
@@ -1272,6 +1270,6 @@ void SP_monster_soldier_ss (edict_t *self)
 	gi.soundindex ("soldier/solatck3.wav");
 
 	self->s.skinnum = 4;
-	self->health = 40;
+	self->health = 100;
 	self->gib_health = -30;
 }

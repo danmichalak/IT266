@@ -151,7 +151,7 @@ void berserk_run (edict_t *self)
 void berserk_attack_spike (edict_t *self)
 {
 	static	vec3_t	aim = {MELEE_DISTANCE, 0, -24};
-	fire_hit (self, aim, (15 + (rand() % 6)), 400);		//	Faster attack -- upwards and backwards
+	fire_hit (self, aim, (30 + (rand() % 6)), 400);		//	Faster attack -- upwards and backwards
 }
 
 
@@ -179,7 +179,7 @@ void berserk_attack_club (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, self->mins[0], -4);
-	fire_hit (self, aim, (5 + (rand() % 6)), 400);		// Slower attack
+	fire_hit (self, aim, (15 + (rand() % 6)), 400);		// Slower attack
 }
 
 mframe_t berserk_frames_attack_club [] =
@@ -413,7 +413,7 @@ void SP_monster_berserk (edict_t *self)
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
 
-	self->health = 240;
+	self->health = 350;
 	self->gib_health = -60;
 	self->mass = 250;
 

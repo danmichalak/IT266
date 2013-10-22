@@ -163,7 +163,7 @@ void flipper_bite (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, 0, 0);
-	fire_hit (self, aim, 5, 0);
+	fire_hit (self, aim, 10, 0);
 }
 
 void flipper_preattack (edict_t *self)
@@ -362,7 +362,7 @@ void SP_monster_flipper (edict_t *self)
 	VectorSet (self->mins, -16, -16, 0);
 	VectorSet (self->maxs, 16, 16, 32);
 
-	self->health = 50;
+	self->health = 150;
 	self->gib_health = -30;
 	self->mass = 100;
 

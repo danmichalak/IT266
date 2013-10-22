@@ -462,7 +462,7 @@ void GunnerGrenade (edict_t *self)
 		VectorSubtract (end, start, aim);
 		VectorNormalize (aim);
 		
-		monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
+		monster_fire_shotgun (self, start, aim, 5, 7, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 	}
 }
 
@@ -598,7 +598,7 @@ void SP_monster_gunner (edict_t *self)
 	VectorSet (self->mins, -16, -16, -24);
 	VectorSet (self->maxs, 16, 16, 32);
 
-	self->health = 175;
+	self->health = 300;
 	self->gib_health = -70;
 	self->mass = 200;
 

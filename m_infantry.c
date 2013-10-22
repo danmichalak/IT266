@@ -240,7 +240,7 @@ vec3_t	aimangles[] =
 
 void InfantryMachineGun (edict_t *self)
 {
-	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+	if(((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
 		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
 			vec3_t	start, target;
 			vec3_t	forward, right;
@@ -510,7 +510,7 @@ void infantry_smack (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, 0, 0);
-	if (fire_hit (self, aim, (5 + (rand() % 5)), 50))
+	if (fire_hit (self, aim, (15 + (rand() % 5)), 50))
 		gi.sound (self, CHAN_WEAPON, sound_punch_hit, 1, ATTN_NORM, 0);
 }
 
@@ -567,7 +567,7 @@ void SP_monster_infantry (edict_t *self)
 	VectorSet (self->mins, -16, -16, -24);
 	VectorSet (self->maxs, 16, 16, 32);
 
-	self->health = 100;
+	self->health = 200;
 	self->gib_health = -40;
 	self->mass = 200;
 
