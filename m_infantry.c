@@ -240,41 +240,43 @@ vec3_t	aimangles[] =
 
 void InfantryMachineGun (edict_t *self)
 {
-	vec3_t	start, target;
-	vec3_t	forward, right;
-	vec3_t	vec;
-	int		flash_number;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start, target;
+		vec3_t	forward, right;
+		vec3_t	vec;
+		int		flash_number;
 
-	if (self->s.frame == FRAME_attak111)
-	{
-		flash_number = MZ2_INFANTRY_MACHINEGUN_1;
-		AngleVectors (self->s.angles, forward, right, NULL);
-		G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
-
-		if (self->enemy)
+		if (self->s.frame == FRAME_attak111)
 		{
-			VectorMA (self->enemy->s.origin, -0.2, self->enemy->velocity, target);
-			target[2] += self->enemy->viewheight;
-			VectorSubtract (target, start, forward);
-			VectorNormalize (forward);
+			flash_number = MZ2_INFANTRY_MACHINEGUN_1;
+			AngleVectors (self->s.angles, forward, right, NULL);
+			G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+
+			if (self->enemy)
+			{
+				VectorMA (self->enemy->s.origin, -0.2, self->enemy->velocity, target);
+				target[2] += self->enemy->viewheight;
+				VectorSubtract (target, start, forward);
+				VectorNormalize (forward);
+			}
+			else
+			{
+				AngleVectors (self->s.angles, forward, right, NULL);
+			}
 		}
 		else
 		{
+			flash_number = MZ2_INFANTRY_MACHINEGUN_2 + (self->s.frame - FRAME_death211);
+
 			AngleVectors (self->s.angles, forward, right, NULL);
+			G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
+
+			VectorSubtract (self->s.angles, aimangles[flash_number-MZ2_INFANTRY_MACHINEGUN_2], vec);
+			AngleVectors (vec, forward, NULL, NULL);
 		}
+
+		monster_fire_bullet (self, start, forward, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 	}
-	else
-	{
-		flash_number = MZ2_INFANTRY_MACHINEGUN_2 + (self->s.frame - FRAME_death211);
-
-		AngleVectors (self->s.angles, forward, right, NULL);
-		G_ProjectSource (self->s.origin, monster_flash_offset[flash_number], forward, right, start);
-
-		VectorSubtract (self->s.angles, aimangles[flash_number-MZ2_INFANTRY_MACHINEGUN_2], vec);
-		AngleVectors (vec, forward, NULL, NULL);
-	}
-
-	monster_fire_bullet (self, start, forward, 3, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_number);
 }
 
 void infantry_sight (edict_t *self, edict_t *other)
@@ -464,16 +466,15 @@ void infantry_cock_gun (edict_t *self)
 	n = (rand() & 15) + 3 + 7;
 	self->monsterinfo.pausetime = level.time + n * FRAMETIME;
 }
-/*
+
 void infantry_fire (edict_t *self)
 {
 	InfantryMachineGun (self);
-	
+
 	if (level.time >= self->monsterinfo.pausetime)
 		self->monsterinfo.aiflags &= ~AI_HOLD_FRAME;
 	else
 		self->monsterinfo.aiflags |= AI_HOLD_FRAME;
-
 }
 
 mframe_t infantry_frames_attack1 [] =
@@ -495,7 +496,7 @@ mframe_t infantry_frames_attack1 [] =
 	ai_charge, -3, NULL
 };
 mmove_t infantry_move_attack1 = {FRAME_attak101, FRAME_attak115, infantry_frames_attack1, infantry_run};
-*/
+
 
 void infantry_swing (edict_t *self)
 {
@@ -526,12 +527,10 @@ mmove_t infantry_move_attack2 = {FRAME_attak201, FRAME_attak208, infantry_frames
 
 void infantry_attack(edict_t *self)
 {
-	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
-		if (range (self, self->enemy) == RANGE_MELEE)
-			self->monsterinfo.currentmove = &infantry_move_attack2;
-	}
-	//else
-	//	self->monsterinfo.currentmove = &infantry_move_attack1;
+	if (range (self, self->enemy) == RANGE_MELEE)
+		self->monsterinfo.currentmove = &infantry_move_attack2;
+	else
+		self->monsterinfo.currentmove = &infantry_move_attack1;
 }
 
 
