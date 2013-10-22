@@ -526,8 +526,10 @@ mmove_t infantry_move_attack2 = {FRAME_attak201, FRAME_attak208, infantry_frames
 
 void infantry_attack(edict_t *self)
 {
-	if (range (self, self->enemy) == RANGE_MELEE)
-		self->monsterinfo.currentmove = &infantry_move_attack2;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		if (range (self, self->enemy) == RANGE_MELEE)
+			self->monsterinfo.currentmove = &infantry_move_attack2;
+	}
 	//else
 	//	self->monsterinfo.currentmove = &infantry_move_attack1;
 }

@@ -436,54 +436,49 @@ void soldier_pain (edict_t *self, edict_t *other, float kick, int damage)
 // ATTACK
 //
 
-static int blaster_flash [] = {MZ2_SOLDIER_BLASTER_1, MZ2_SOLDIER_BLASTER_2, MZ2_SOLDIER_BLASTER_3, MZ2_SOLDIER_BLASTER_4, MZ2_SOLDIER_BLASTER_5, MZ2_SOLDIER_BLASTER_6, MZ2_SOLDIER_BLASTER_7, MZ2_SOLDIER_BLASTER_8};
 static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
-static int machinegun_flash [] = {MZ2_SOLDIER_MACHINEGUN_1, MZ2_SOLDIER_MACHINEGUN_2, MZ2_SOLDIER_MACHINEGUN_3, MZ2_SOLDIER_MACHINEGUN_4, MZ2_SOLDIER_MACHINEGUN_5, MZ2_SOLDIER_MACHINEGUN_6, MZ2_SOLDIER_MACHINEGUN_7, MZ2_SOLDIER_MACHINEGUN_8};
 
 void soldier_fire (edict_t *self, int flash_number)
 {
-	vec3_t	start;
-	vec3_t	forward, right, up;
-	vec3_t	aim;
-	vec3_t	dir;
-	vec3_t	end;
-	float	r, u;
-	int		flash_index;
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+		vec3_t	start;
+		vec3_t	forward, right, up;
+		vec3_t	aim;
+		vec3_t	dir;
+		vec3_t	end;
+		float	r, u;
+		int		flash_index;
 
-	if (self->s.skinnum < 2)
-		flash_index = blaster_flash[flash_number];
-	else if (self->s.skinnum < 4)
 		flash_index = shotgun_flash[flash_number];
-	else
-		flash_index = machinegun_flash[flash_number];
 
-	AngleVectors (self->s.angles, forward, right, NULL);
-	G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
+		AngleVectors (self->s.angles, forward, right, NULL);
+		G_ProjectSource (self->s.origin, monster_flash_offset[flash_index], forward, right, start);
 
-	if (flash_number == 5 || flash_number == 6)
-	{
-		VectorCopy (forward, aim);
+		if (flash_number == 5 || flash_number == 6)
+		{
+			VectorCopy (forward, aim);
+		}
+		else
+		{
+			VectorCopy (self->enemy->s.origin, end);
+			end[2] += self->enemy->viewheight;
+			VectorSubtract (end, start, aim);
+			vectoangles (aim, dir);
+			AngleVectors (dir, forward, right, up);
+
+			r = crandom()*1000;
+			u = crandom()*500;
+			VectorMA (start, 8192, forward, end);
+			VectorMA (end, r, right, end);
+			VectorMA (end, u, up, end);
+
+			VectorSubtract (end, start, aim);
+			VectorNormalize (aim);
+		}
+		
+		if ((range (self, self->enemy) == RANGE_NEAR) || (range (self, self->enemy) == RANGE_MELEE))
+			monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 	}
-	else
-	{
-		VectorCopy (self->enemy->s.origin, end);
-		end[2] += self->enemy->viewheight;
-		VectorSubtract (end, start, aim);
-		vectoangles (aim, dir);
-		AngleVectors (dir, forward, right, up);
-
-		r = crandom()*1000;
-		u = crandom()*500;
-		VectorMA (start, 8192, forward, end);
-		VectorMA (end, r, right, end);
-		VectorMA (end, u, up, end);
-
-		VectorSubtract (end, start, aim);
-		VectorNormalize (aim);
-	}
-	
-	if (range (self, self->enemy) == RANGE_NEAR)
-		monster_fire_shotgun (self, start, aim, 2, 1, DEFAULT_SHOTGUN_HSPREAD, DEFAULT_SHOTGUN_VSPREAD, DEFAULT_SHOTGUN_COUNT, flash_index);
 }
 
 // ATTACK1 (blaster/shotgun)
