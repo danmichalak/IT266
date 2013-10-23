@@ -242,7 +242,7 @@ vec3_t	aimangles[] =
 
 void InfantryMachineGun (edict_t *self)
 {
-	if(((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
+	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
 		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
 			vec3_t	start, target;
 			vec3_t	forward, right;
