@@ -601,7 +601,7 @@ void SP_monster_flyer (edict_t *self)
 
 	self->s.sound = gi.soundindex ("flyer/flyidle1.wav");
 
-	self->health = 150;
+	self->health = 75;
 	self->mass = 50;
 
 	self->pain = flyer_pain;

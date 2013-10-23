@@ -619,7 +619,7 @@ void SP_monster_mutant (edict_t *self)
 	VectorSet (self->mins, -32, -32, -24);
 	VectorSet (self->maxs, 32, 32, 48);
 
-	self->health = 400;
+	self->health = 500;
 	self->gib_health = -120;
 	self->mass = 300;
 

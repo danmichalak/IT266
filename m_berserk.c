@@ -416,7 +416,7 @@ void SP_monster_berserk (edict_t *self)
 	self->movetype = MOVETYPE_STEP;
 	self->solid = SOLID_BBOX;
 
-	self->health = 350;
+	self->health = 300;
 	self->gib_health = -60;
 	self->mass = 250;
 

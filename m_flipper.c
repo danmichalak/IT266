@@ -364,7 +364,7 @@ void SP_monster_flipper (edict_t *self)
 	VectorSet (self->mins, -16, -16, 0);
 	VectorSet (self->maxs, 16, 16, 32);
 
-	self->health = 150;
+	self->health = 75;
 	self->gib_health = -30;
 	self->mass = 100;
 

@@ -600,7 +600,7 @@ void SP_monster_gunner (edict_t *self)
 	VectorSet (self->mins, -16, -16, -24);
 	VectorSet (self->maxs, 16, 16, 32);
 
-	self->health = 300;
+	self->health = 250;
 	self->gib_health = -70;
 	self->mass = 200;
 
