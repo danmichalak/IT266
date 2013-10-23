@@ -2,6 +2,12 @@
 
 #include "q_shared.h"
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 
+MOST OF THE CHANGES REVOLVE AROUND ENEMY STATS AND HOW THEY REACT TO THE FLASHLIGHT 
+HE ALSO TURNED OFF THE LIGHTS MAGICALLY -jp368
+*/
+
+
 // define GAME_INCLUDE so that game.h does not define the
 // short, server-visible gclient_t and edict_t structures,
 // because we define the full size ones in this file

@@ -6,6 +6,8 @@ chick
 ==============================================================================
 */
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
+
 #include "g_local.h"
 #include "m_chick.h"
 
@@ -429,7 +431,8 @@ void ChickSlash (edict_t *self)
 }
 
 
-void ChickRocket (edict_t *self)
+void ChickRocket (edict_t *self) //After yelling at Dan, he said he added this, seems legit to me 
+								//looks like it wont attack if  not in front of the player or if player's flashlight is off -jp368
 {
 	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
 		vec3_t	forward, right;

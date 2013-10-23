@@ -6,6 +6,8 @@ floater
 ==============================================================================
 */
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
+
 #include "g_local.h"
 #include "m_float.h"
 
@@ -39,7 +41,7 @@ void floater_zap (edict_t *self);
 
 static int shotgun_flash [] = {MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4, MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8};
 
-void floater_fire_blaster (edict_t *self)
+void floater_fire_blaster (edict_t *self)  //I feel like changes take place here, would be nice for a F%#@ING COMMENT, seriously I am so pissed -jp368
 {
 	if((self->enemy->flashlight == NULL) || (!infront(self->enemy, self))) {
 		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {

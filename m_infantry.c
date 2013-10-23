@@ -6,6 +6,8 @@ INFANTRY
 ==============================================================================
 */
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
+
 #include "g_local.h"
 #include "m_infantry.h"
 
