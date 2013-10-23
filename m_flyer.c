@@ -430,7 +430,7 @@ void flyer_slash_right (edict_t *self)
 	vec3_t	aim;
 
 	VectorSet (aim, MELEE_DISTANCE, self->maxs[0], 0);
-	fire_hit (self, aim, 5, 0);
+	fire_hit (self, aim, 10, 0);
 	gi.sound (self, CHAN_WEAPON, sound_slash, 1, ATTN_NORM, 0);
 }
 
