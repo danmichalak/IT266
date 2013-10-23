@@ -6,6 +6,8 @@ TANK
 ==============================================================================
 */
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
+
 #include "g_local.h"
 #include "m_tank.h"
 
@@ -309,7 +311,7 @@ void tank_pain (edict_t *self, edict_t *other, float kick, int damage)
 // attacks
 //
 
-void TankBlaster (edict_t *self)
+void TankBlaster (edict_t *self) //Looks like something was changed here... -jp368
 {
 		if ((range(self, self->enemy) == RANGE_MELEE) || (range(self, self->enemy) == RANGE_NEAR)) {
 			vec3_t	forward, right;

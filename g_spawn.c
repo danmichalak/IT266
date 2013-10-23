@@ -1,5 +1,6 @@
-
 #include "g_local.h"
+
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
 
 typedef struct
 {

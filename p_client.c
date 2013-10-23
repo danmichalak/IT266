@@ -1,6 +1,8 @@
 #include "g_local.h"
 #include "m_player.h"
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
+
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
@@ -1831,7 +1833,7 @@ void FL_think (edict_t *self)
     self->nextthink = level.time + 0.1;
 }
 
-void FL_make(edict_t *self)
+void FL_make(edict_t *self) //I believe a flashlight is being made here... -jp368
 {
     vec3_t    start,forward,right,end;
     if ( self->flashlight )

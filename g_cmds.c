@@ -1,6 +1,7 @@
 #include "g_local.h"
 #include "m_player.h"
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
 
 char *ClientTeam (edict_t *ent)
 {
@@ -969,7 +970,7 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 		Cmd_PlayerList_f(ent);
 	else if (Q_stricmp(cmd, "flashlight") == 0)
-		FL_make(ent);
+		FL_make(ent); //
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

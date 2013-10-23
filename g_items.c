@@ -1,5 +1,8 @@
 #include "g_local.h"
 
+/*DAN IS A HORRIBLE PERSON AND DOESN'T COMMENT ANYTHING. I HATE HIM -jp368 */
+
+
 
 qboolean	Pickup_Weapon (edict_t *ent, edict_t *other);
 void		Use_Weapon (edict_t *ent, gitem_t *inv);
@@ -1068,7 +1071,7 @@ always owned, never in the world
 /*QUAKED weapon_shotgun (.3 .3 1) (-16 -16 -16) (16 16 16)
 */
 	{
-		NULL, 
+		NULL, //I took out items the same way -jp368
 		NULL,
 		NULL,
 		NULL,

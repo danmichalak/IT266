@@ -2,8 +2,13 @@
 <Properties><Property Name="Solution" Value="game">
 </Property><Property Name="Solution File" Value="C:\Users\James\Desktop\IT266\game.sln">
 </Property><Property Name="User Options File" Value="C:\Users\James\Desktop\IT266\game.suo">
+<<<<<<< HEAD
 </Property><Property Name="Date" Value="Wednesday, October 23, 2013">
 </Property><Property Name="Time" Value="0:53 AM">
+=======
+</Property><Property Name="Date" Value="Tuesday, October 22, 2013">
+</Property><Property Name="Time" Value="21:52 PM">
+>>>>>>> 5b08fcd37599763c5c69feb5d4ac56b3a8ae9d80
 </Property></Properties><Event ErrorLevel="0" Project="" Source="game.sln" Description="File successfully backed up as C:\Users\James\Desktop\IT266\game.sln.old">
 </Event><Event ErrorLevel="0" Project="" Source="game.suo" Description="File successfully backed up as C:\Users\James\Desktop\IT266\game.suo.old">
 </Event><Event ErrorLevel="0" Project="game" Source="game.vcproj" Description="Converting project file 'C:\Users\James\Desktop\IT266\game.vcproj'.">
